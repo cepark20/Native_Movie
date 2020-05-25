@@ -35,14 +35,52 @@ Food.propTypes = {
   rating: PropTypes.number
 }
 
-function App() {
-  return (
-    <div>
-      {foodILike.map(dish =>(
-        <Food key={dish.id} name={dish.name} picture={dish.image} rating={dish.rating} />
-      ))}
-    </div>
-  );
+//setState를 할 때마다 새로운 state + render function 호출 
+class App extends React.Component{
+
+  state = {
+    count: 0
+  };
+  add = () => {
+    //this.state.count = 1; not working! 
+    //this.setState({count: this.state.count + 1}); not good
+    this.setState(current => ( //current: current state 
+      {count: current.count + 1}
+    ));
+  }; // 외부의 상태에 의존하지 않는 가장 좋은 방법 
+  minus = () => {
+    this.setState(current => (
+      {count: current.count - 1}
+    ));
+  };
+
+  // 처음 만들어졌을 때 
+  componentDidMount(){
+    console.log("component rendered");
+    
+  }
+
+  //업데이트할 때 마다 호출 
+  componentDidUpdate(){
+    console.log("I just updated");
+    
+  }
+
+  componentWillUnmount(){
+    console.log("Goodbye");
+  }
+
+  render(){
+    console.log("Im rendering");
+    
+    return (
+      <div>
+        <h1>The number is {this.state.count}</h1>
+        <button onClick={this.add}>Add</button>
+        <button onClick={this.minus}>Minus</button>
+      </div>
+    );
+  }
 }
 
 export default App;
